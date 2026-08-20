@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>团队成员自我介绍</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+      background: linear-gradient(135deg, #f5f7ff 0%, #eef6ff 100%);
+      color: #1f2937;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 45%, #38bdf8 100%);
+      overflow: hidden;
+      box-shadow: inset 0 -20px 40px rgba(15, 23, 42, 0.18);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      filter: blur(10px);
+      animation: float 12s ease-in-out infinite alternate;
+    }
+
+    .hero::before {
+      width: 420px;
+      height: 420px;
+      top: -80px;
+      left: -60px;
+    }
+
+    .hero::after {
+      width: 500px;
+      height: 500px;
+      bottom: -160px;
+      right: -90px;
+      animation-delay: 1.5s;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: #fff;
+      padding: 40px 20px;
+      animation: fadeUp 1.2s ease-out both;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 8px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.3rem, 5vw, 4.2rem);
+      letter-spacing: 0.08em;
+      text-shadow: 0 10px 30px rgba(15, 23, 42, 0.35);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: 18px auto 0;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .hero-tags span {
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(6px);
+      color: #e0f2fe;
+      font-size: 0.9rem;
+      animation: float 5s ease-in-out infinite alternate;
+    }
+
+    .hero-tags span:nth-child(2) { animation-delay: 0.7s; }
+    .hero-tags span:nth-child(3) { animation-delay: 1.2s; }
+    .hero-tags span:nth-child(4) { animation-delay: 1.8s; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-18px) scale(1.03); }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2.4rem;
+      letter-spacing: 2px;
+      color: #1d4ed8;
+    }
+
+    .header p {
+      margin-top: 10px;
+      color: #4b5563;
+      font-size: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid #dbeafe;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 30px rgba(59, 130, 246, 0.12);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      max-height: 320px;
+      object-fit: contain;
+      display: block;
+      background: #e5e7eb;
+    }
+
+    .jump-link {
+      display: block;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .jump-link::after {
+      content: "点击展示全部";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.58);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+
+    .grid .jump-link::after {
+      display: none;
+    }
+
+    .jump-link:hover::after,
+    .jump-link:focus-visible::after {
+      opacity: 1;
+    }
+
+    .jump-link img {
+      cursor: pointer;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+
+    .jump-link:hover img {
+      transform: scale(1.02);
+      filter: saturate(1.12);
+    }
+
+    .content {
+      padding: 18px 16px 20px;
+    }
+
+    .content h2 {
+      margin: 0 0 10px;
+      font-size: 1.3rem;
+      color: #111827;
+    }
+
+    .content p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #4b5563;
+      text-align: justify;
+    }
+
+    .member-detail {
+      margin-top: 48px;
+      display: grid;
+      gap: 30px;
+    }
+
+    .feature {
+      display: grid;
+      grid-template-columns: 1.1fr 1.3fr;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #dbeafe;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 14px 28px rgba(59, 130, 246, 0.08);
+    }
+
+    .feature.reverse {
+      grid-template-columns: 1.3fr 1.1fr;
+    }
+
+    .feature.reverse .feature-text {
+      order: 1;
+    }
+
+    .feature.reverse .feature-media {
+      order: 2;
+    }
+
+    .feature-media {
+      min-height: 320px;
+    }
+
+    .feature-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: #e5e7eb;
+    }
+
+    .feature-text {
+      padding: 28px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(239,246,255,0.8), rgba(255,255,255,0.9));
+    }
+
+    .feature-tag {
+      display: inline-block;
+      width: fit-content;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .feature-text h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 2vw, 2.1rem);
+      color: #111827;
+    }
+
+    .feature-text p {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.9;
+      color: #4b5563;
+      text-align: justify;
+    }
+
+    .jump-button {
+      display: inline-block;
+      width: fit-content;
+      margin-top: 20px;
+      padding: 10px 22px;
+      border-radius: 999px;
+      background: #1d4ed8;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      transition: background 0.25s ease, transform 0.25s ease;
+    }
+
+    .jump-button:hover,
+    .jump-button:focus-visible {
+      background: #1e40af;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        min-height: 360px;
+      }
+
+      .hero-inner {
+        width: 100%;
+        padding: 32px 16px;
+      }
+
+      .hero-badge {
+        max-width: 100%;
+        padding: 7px 12px;
+        font-size: 0.72rem;
+        letter-spacing: 1px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 11vw, 3rem);
+        letter-spacing: 0.04em;
+      }
+
+      .hero p {
+        margin-top: 14px;
+        font-size: 0.95rem;
+        line-height: 1.65;
+      }
+
+      .hero-tags {
+        gap: 8px;
+        margin-top: 20px;
+      }
+
+      .hero-tags span {
+        padding: 8px 13px;
+        font-size: 0.82rem;
+      }
+
+      .container {
+        padding: 28px 14px 40px;
+      }
+
+      .header {
+        margin-bottom: 22px;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .header p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      .feature,
+      .feature.reverse {
+        grid-template-columns: 1fr;
+        border-radius: 16px;
+      }
+
+      .feature-text,
+      .feature.reverse .feature-text,
+      .feature.reverse .feature-media {
+        order: initial;
+      }
+
+      .feature-media {
+        min-height: 0;
+        aspect-ratio: 4 / 3;
+      }
+
+      .feature-text {
+        padding: 22px 18px 24px;
+      }
+
+      .feature-text h3 {
+        font-size: 1.55rem;
+      }
+
+      .feature-text p {
+        font-size: 0.95rem;
+        line-height: 1.8;
+        text-align: left;
+        overflow-wrap: anywhere;
+      }
+
+      .jump-button {
+        width: 100%;
+        margin-top: 18px;
+        padding: 11px 18px;
+        text-align: center;
+      }
+
+      .jump-link::after {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .hero h1 {
+        font-size: 1.85rem;
+      }
+
+      .feature-text {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">长风破浪会有时，直挂云帆济沧海</div>
+      <h1>WE ARE FAMILY</h1>
+      <p>我们虽然不在同一个地方，却有相同的主张</p>
+      <div class="hero-tags">
+        <span>创新</span>
+        <span>协作</span>
+        <span>团结</span>
+        <span>成长</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="header">
+      <h1>请选择你的英雄</h1>
+      <p>认识每一位伙伴，了解他们的故事与热爱</p>
+    </div>
+
+    <div class="member-detail">
+      <section id="member-zhangxiaolin" class="feature">
+        <div class="feature-media">
+          <a class="jump-link" href="https://khsj.cn/gpb6ea31xbzwjhe" target="_blank" rel="noopener noreferrer" aria-label="打开胡席嘉图片网页">
+            <img src="./src/p1.jpg" alt="胡席嘉" />
+          </a>
+        </div>
+        <div class="feature-text">
+          <span class="feature-tag">成员一</span>
+          <h3>胡席嘉</h3>
+          <p>哈喽，大家好我是胡席嘉，来自吉林省长春市，过去的22年生命可以说是丰富多彩，创过业，拉过投资，扫过楼，拿了专利，学了网球，练了射击，可以说完全高精力人群了。</p>
+          <a class="jump-button" href="https://khsj.cn/gpb6ea31xbzwjhe" target="_blank" rel="noopener noreferrer">点击了解更多</a>
+        </div>
+      </section>
+
+      <section id="member-liyuhang" class="feature reverse">
+        <div class="feature-media">
+          <a class="jump-link" href="https://v.xiumius.cn/board/v5/7LGyL/712892584" target="_blank" rel="noopener noreferrer" aria-label="打开陈欣图片网页">
+            <img src="./src/p2.jpg" alt="陈欣" />
+          </a>
+        </div>
+        <div class="feature-text">
+          <span class="feature-tag">成员二</span>
+          <h3>陈欣</h3>
+          <p>我叫陈欣，中共党员，中南财经政法大学金融硕士。拥有审计、券商固收、基金渠道的实习经历，擅长数据分析与文稿撰写。曾担任研究生党支部书记，具备组织协调能力。爱好舞蹈、足球，平时关注财经资讯，做事严谨细致。</p>
+          <a class="jump-button" href="https://v.xiumius.cn/board/v5/7LGyL/712892584" target="_blank" rel="noopener noreferrer">点击了解更多</a>
+        </div>
+      </section>
+
+      <section id="member-wangyaqi" class="feature">
+        <div class="feature-media">
+          <a class="jump-link" href="https://yushui-source.github.io/Introduction/" target="_blank" rel="noopener noreferrer" aria-label="打开王景锟图片网页">
+            <img src="./src/p3.jpg" alt="王景锟" />
+          </a>
+        </div>
+        <div class="feature-text">
+          <span class="feature-tag">成员三</span>
+          <h3>王景锟</h3>
+          <p>我是王景锟，来自内蒙古呼伦贝尔，毕业于广东金融学院信息管理与信息系统专业。擅长前后端编程，爱好写作、唱歌、魔术、长刀、即兴配音演绎等，在校期间做过舞台剧演员、主持人、社团会长，校外做过电车销售、电商运营实习。“海纳百川，融汇贯通”是我的座右铭。</p>
+          <a class="jump-button" href="https://yushui-source.github.io/Introduction/" target="_blank" rel="noopener noreferrer">点击了解更多</a>
+        </div>
+      </section>
+
+      <section id="member-chenjunjie" class="feature reverse">
+        <div class="feature-media">
+          <a class="jump-link" href="https://image.58sb.cn/file/img/6jpB4oOr.jpg" target="_blank" rel="noopener noreferrer" aria-label="打开林千惠图片网页">
+            <img src="./src/p4.jpg" alt="林千惠" />
+          </a>
+        </div>
+        <div class="feature-text">
+          <span class="feature-tag">成员四</span>
+          <h3>林千慧</h3>
+          <p>大家好，我是林千惠，来自澳门大学数据科学专业，是一位喜欢历史的理科生，平常爱逛博物馆，非常荣幸加入工行大家庭。</p>
+          <a class="jump-button" href="https://image.58sb.cn/file/img/6jpB4oOr.jpg" target="_blank" rel="noopener noreferrer">点击了解更多</a>
+        </div>
+      </section>
+
+      <section id="member-zhaosiyu" class="feature">
+        <div class="feature-media">
+          <a class="jump-link" href="https://v.xiumius.cn/stage/v5/67Sm3/720534879" target="_blank" rel="noopener noreferrer" aria-label="打开余江崇图片网页">
+            <img src="./src/p5.jpg" alt="余江崇" />
+          </a>
+        </div>
+        <div class="feature-text">
+          <span class="feature-tag">成员五</span>
+          <h3>余江崇</h3>
+          <p>大家好，我叫余江崇，来自江西上饶，毕业于江西财经大学。在多家银行不同业务线做过实习，也在事务所做过审计工作。性格乐观开朗，富有强烈责任心。热爱竞技性强的球类运动（篮球，足球）。</p>
+          <a class="jump-button" href="https://v.xiumius.cn/stage/v5/67Sm3/720534879" target="_blank" rel="noopener noreferrer">点击了解更多</a>
+        </div>
+      </section>
+
+      <section id="member-zhoubowen" class="feature reverse">
+        <div class="feature-media">
+          <a class="jump-link" href="https://ftp.mioz.cn/test/2026/08/20/1787157591.JPG" target="_blank" rel="noopener noreferrer" aria-label="打开刘梓怡图片网页">
+            <img src="./src/p6.jpg" alt="刘梓怡" />
+          </a>
+        </div>
+        <div class="feature-text">
+          <span class="feature-tag">成员六</span>
+          <h3>刘梓怡</h3>
+          <p>我刘梓怡，来自江西九江，毕业于江西师范大学。很幸运来到深圳，加入中国工商银行宝安臣田支行。在接下来的工作中，我会保持空杯心态，虚心学习业务知识，脚踏实地做好本职工作，秉持初心做好金融服务，稳步成长。未来请各位领导、同事多多指点。</p>
+          <a class="jump-button" href="https://ftp.mioz.cn/test/2026/08/20/1787157591.JPG" target="_blank" rel="noopener noreferrer">点击了解更多</a>
+        </div>
+      </section>
+
+      <section id="member-sunjianing" class="feature">
+        <div class="feature-media">
+          <a class="jump-link" href="https://v.xiumius.cn/board/v5/6ewbF/712302096" target="_blank" rel="noopener noreferrer" aria-label="打开林丽欣图片网页">
+            <img src="./src/p7.jpg" alt="林丽欣" />
+          </a>
+        </div>
+        <div class="feature-text">
+          <span class="feature-tag">成员七</span>
+          <h3>林丽欣</h3>
+          <p>大家好，我叫林丽欣，是一个在深圳长大的潮汕人。我性格开朗乐观，做事认真仔细。平常热爱运动，比较喜欢打羽毛球和游泳。很高兴加入宝安支行，希望能在宝安支行多多学习，跟大家共同进步！</p>
+          <a class="jump-button" href="https://v.xiumius.cn/board/v5/6ewbF/712302096" target="_blank" rel="noopener noreferrer">点击了解更多</a>
+        </div>
+      </section>
+
+      <section id="member-liuzeyu" class="feature reverse">
+        <div class="feature-media">
+          <a class="jump-link" href="https://khsj.cn/w2ya253l0c5rza5" target="_blank" rel="noopener noreferrer" aria-label="打开曾琪图片网页">
+            <img src="./src/p8.jpg" alt="曾琪" />
+          </a>
+        </div>
+        <div class="feature-text">
+          <span class="feature-tag">成员八</span>
+          <h3>曾琪</h3>
+          <p>大家好呀！我叫曾琦，来自湖北宜昌，性格上偏内敛，但也很喜欢交朋友。热爱尝试新鲜事物和记录生活，喜欢打羽毛球、摄影、打架子鼓等，也算的上是德智体美劳全面发展了。</p>
+          <a class="jump-button" href="https://khsj.cn/w2ya253l0c5rza5" target="_blank" rel="noopener noreferrer">点击了解更多</a>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
